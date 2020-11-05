@@ -1,28 +1,20 @@
-document.getElementById('button1').addEventListener
-('click', loadCSV);
+let input = document.querySelector('input');
+let textarea = document.querySelector('textarea');
 
-let datas=[];
+input.addEventListener('change', () => {
+    let files = input.files;
+    let firstFile = files[0];
+    if (files.length == 0) return;
+    let reader = new FileReader();
 
-// Load CSV
-function loadCSV(){
-    fetch('단어장.csv')
-    .then(function(response){
-        return response.text();
-    })
-    .then(function(data){
-        const spe = /\n\r|\n/;
-        const alldatas = data.split(spe);
-        for (let i = 1 ; i < alldatas.length ; i++){
-            let rows = alldatas[i].split(',');
-            let col=[];
-            for (let j = 0 ; j < rows.length ; j++){
-                col.push(rows[j])
-            }
-            datas.push(col); 
-        }
-        console.log(datas)
-    })
-    .catch(function(error){
-        console.log(error);
-    })
-}
+    reader.onload = (e) => {
+        const file = e.target.result;
+        const lines = file.split(/\r\n|\n/);
+        console.log(lines)
+        textarea.value=lines.join('\n');
+    };
+
+    reader.onerror = (e) => alert(e.target.error.name);
+
+    reader.readAsText(firstFile, "UTF-8");
+});
