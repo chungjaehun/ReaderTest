@@ -17,4 +17,26 @@ input.addEventListener('change', () => {
     reader.onerror = (e) => alert(e.target.error.name);
 
     reader.readAsText(firstFile, "UTF-8");
+
+    readTextFile('./단어장.csv');
 });
+
+
+
+function readTextFile(file)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                alert(allText);
+            }
+        }
+    }
+    rawFile.send(null);
+}
